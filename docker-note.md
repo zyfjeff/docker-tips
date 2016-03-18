@@ -27,12 +27,13 @@ Setp6:  此后对github上的dockerfile有改动都会触发docker hub进行Auto
 ## Tips4 docker镜像层的个数有限制吗?这个限制和所选择的Storage Driver有关系吗?
 一个镜像是不能超过127层，无论是使用何种Storgae Driver.因此在写Dockfile的时候，应该尽可能的优化Dockrfile中指令的使用，避免产生不必要的镜像层
 
+
 ## Tips5 什么是Image Digests?
 docker images在使用v2版本的格式存储的时候，会给镜像添加一个可以基于内容寻址的标识符叫做digest，可以通过`sudo docker images --digests`来查看
 如果你的镜像是从v1格式的镜像仓库中拉取的那么对应的digest则是`<none>`，有了digest后，我们就可以使用digest作为标识来运行容器，删除镜像等操作
 
 ## Tips6 什么是docker的link机制，引入自定义网络后link机制有什么变化?
-参见<<深入理解docker的link机制>>
+参见[<<深入理解docker的link机制>>](http://blog.csdn.net/zhangyifei216/article/details/50921215)
 
 ## Tips7 数据卷类型和生命周期
 数据卷的类型有如下几种:
