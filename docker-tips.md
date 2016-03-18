@@ -17,12 +17,12 @@ srw-rw---- 1 root docker 0  3月 17 09:25 /var/run/docker.sock
 注: docker images -t可以显示镜像层树状关系。不过这个在较新版本的docker中已经被废弃了
 
 ## Tips3 如何设置镜像的自动构建
-Setp1:  登陆Docker hub 创建自己的账号和密码，登陆后点击用户名选择[Settings](https://hub.docker.com/account/settings/)
-Setp2:  选择[Linked Accounts & Services](https://hub.docker.com/account/authorized-services/) ,然后点击link github或者link bitbucket
-Setp3:  github账号link完成后，点击用户名旁边的create菜单，选择Create Automated Build,在弹出的页面中选择Create Auto-build
-Setp4:  此时会列出Setp2中link的账号中的所有仓库,你从中选择你要Auto Build的仓库(这个仓库中应该放着build镜像所需要的dockerfile和一些文件)
-Setp5:  选择完成后跳转到Automated build的设置页面，点击Build Settings，设置Build,设置Build的branch，设置Build采用的dockerfile的位置
-Setp6:  此后对github上的dockerfile有改动都会触发docker hub进行Automated Build
+* Setp1:  登陆Docker hub 创建自己的账号和密码，登陆后点击用户名选择[Settings](https://hub.docker.com/account/settings/)
+* Setp2:  选择[Linked Accounts & Services](https://hub.docker.com/account/authorized-services/) ,然后点击link github或者link bitbucket
+* Setp3:  github账号link完成后，点击用户名旁边的create菜单，选择Create Automated Build,在弹出的页面中选择Create Auto-build
+* Setp4:  此时会列出Setp2中link的账号中的所有仓库,你从中选择你要Auto Build的仓库(这个仓库中应该放着build镜像所需要的dockerfile和一些文件)
+* Setp5:  选择完成后跳转到Automated build的设置页面，点击Build Settings，设置Build,设置Build的branch，设置Build采用的dockerfile的位置
+* Setp6:  此后对github上的dockerfile有改动都会触发docker hub进行Automated Build
 
 
 ## Tips4 docker镜像层的个数有限制吗?这个限制和所选择的Storage Driver有关系吗?
