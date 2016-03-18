@@ -1,7 +1,8 @@
 ## Tips1 不使用管理员权限运行docker命令
 docker命令默认情况下是需要使用root权限去运行，在不能使用管理员权限的场合下，可以通过创建一个名为docker的组，然后给这个组添加普通用户，
-那么添加的普通用户就可以不需要使用root权限去执行docker命令了，docker执行命令的时候本质上就是去连接unix socket，然后通过unix socket给docker daemon发送
-命令，因此只要对unix socket文件有权限就可以操作docker，docker正是利用了这点，给unix socket设置了属组为docker，组权限为rw，通过下面命令可以查看:
+那么添加的普通用户就可以不需要使用root权限去执行docker命令了，docker执行命令的时候本质上就是去连接unix socket，然后通过unix socket给
+docker daemon发送命令，因此只要对unix socket文件有权限就可以操作docker，docker正是利用了这点，给unix socket设置了属组为docker，组权限为rw，
+通过下面命令可以查看:
 
 ```
 ls -l /var/run/docker.sock  
@@ -10,8 +11,8 @@ srw-rw---- 1 root docker 0  3月 17 09:25 /var/run/docker.sock
 
 ## Tips2 如何可视化容器间的link关系，和镜像层之间的关系
 
-[dockviz](https://github.com/justone/dockviz)是官方推荐的一个第三方工具，可以将容器之间的link关系和镜像层之间的关系输出为dot脚本
-然后可以通过dot命令将dot脚本输出为图形。
+[dockviz](https://github.com/justone/dockviz)是官方推荐的一个第三方工具，可以将容器之间的link关系和镜像层之间的关系输出为dot脚本然后可
+以通过dot命令将dot脚本输出为图形。
 
 注: docker images -t可以显示镜像层树状关系。不过这个在较新版本的docker中已经被废弃了
 
@@ -66,15 +67,16 @@ redis_server是你要启动的容器名字，-a标志可以将容器的输入输
 
 ## Tips9 如何设置容器内的dns服务器地址
 `--dns --dns-search, or --dns-opt`　在运行容器的时候指定这三个操作可以自定义dns服务器地址，dns搜索的domain，dns服务器地址搜索的options
-如果没有指定上述选项那么启动容器的时候会搜索宿主机机器上的/etc/reslov.conf，如果发现条目就会将其载入到容器中的/etc/reslov.conf，否则就使用8.8.8.8和8.8.4.4，
-在容器运行过程中，如果host机器的/etc/reslov.conf发生了改变，那么当这个容器stop后再次start后就会自动更新/etc/reslov.conf其实现机制是通过linux kernel's的
-intofy特性实现的．但是正在运行中的容器是无法自动更新的，需要stop后再次start才行．但是目前这个特性不支持overlay文件系统，因此如果你的镜像存储用的是overlay文件
-系统，那么你就无法自动更新dns服务器地址了，
-
-如果你使用的是自定义网络，那么默认使用的是docker daemon内置的dns服务，所以/etc/reslov.conf会指向127.0.0.11．其实现机制是通过在容器的网络命名空间中
-设置ipatbles规则将127.0.0.11 53端口的tcp/upd访问做了DNAT转到tcp的127.0.0.1:53710和udp的127.0.0.1:37897上,然后在这个容器的网络命名空间中启动了内置dns服务。
-并监听在tcp的53710端口和udp的37897端口。
+如果没有指定上述选项那么启动容器的时候会搜索宿主机机器上的`/etc/reslov.conf`，如果发现条目就会将其载入到容器中的`/etc/reslov.conf`，否则就使用`8.8.8.8`
+和`8.8.4.4`，在容器运行过程中，如果host机器的`/etc/reslov.conf`发生了改变，那么当这个容器stop后再次start后就会自动更新`/etc/reslov.conf`其实现机制是通过
+linux kernel's的intofy特性实现的．但是正在运行中的容器是无法自动更新的，需要stop后再次start才行．但是目前这个特性不支持overlay文件系统，因此如果你
+的镜像存储用的是overlay文件系统，那么你就无法自动更新dns服务器地址了，如果你使用的是自定义网络，那么默认使用的是docker daemon内置的dns服务，所以`/etc/reslov.conf`
+会指向`127.0.0.11`．其实现机制是通过在容器的网络命名空间中设置ipatbles规则将`127.0.0.11 53`端口的tcp/upd访问做了DNAT转到tcp的`127.0.0.1:53710`和udp的`127.0.0.1:37897`上,
+然后在这个容器的网络命名空间中启动了内置dns服务。并监听在tcp的53710端口和udp的37897端口。
 
 ## Tips10 如何查看容器的网络命名空间
 每一个网络命名空间都有一个唯一的标识，在/proc/$PID/ns/net中为了可以通过ip netns命令来访问网络命名空间，必须要将`/proc/$PID/ns/net`链接到`/var/run/netns`目录下
 才可以通过ip netns show来查看到命名空间。
+
+## Tips11 如何选择storage driver
+参见[docker storage driver compare](http://blog.csdn.net/zhangyifei216/article/details/50697855)
